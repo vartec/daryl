@@ -1,11 +1,10 @@
 #define _GNU_SOURCE
 
 #include <stdio.h>
-#include <unistd.h>
-#include <errno.h>
 #include <string.h>
 #include <dlfcn.h>
 #include <stdlib.h>
+#include <syslog.h>
 
 FILE* (*_fopen)(const char *path, const char *mode);
 FILE* (*_fopen64)(const char *path, const char *mode);
@@ -19,7 +18,9 @@ int tag_file_opened(const char *path)
 		watched_path_prefix = getenv("WATCHED_PATH_PREFIX");
 	}
 	if (strncmp(path, watched_path_prefix, strlen(watched_path_prefix)) == 0) {
-		fprintf(stderr, "OPENED: %s\n", path);
+		openlog("daryl_fopen_shim", 0, LOG_USER);
+		syslog(LOG_INFO, "ATTEMPTING TO OPEN: %s", path);
+		closelog();
 		return 1;
 	} else {
 		return 0;
