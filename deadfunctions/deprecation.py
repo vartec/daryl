@@ -1,7 +1,8 @@
 import functools
-from logging import getLogger
+import logging
 
-logger = getLogger("deprecation")
+
+logger = logging.getLogger("deprecation")
 
 
 def deprecated(author, date):
@@ -17,7 +18,7 @@ def deprecated(author, date):
         @functools.wraps(f)
         def _wrapped(*args, **kwargs):
             logger.warn("Deprecated function called! {f_name} (deprecated by {author} on {date})"
-                        .format({"f_name": f.__name__, "author": author, "date": date}), ext_info=True)
+                        .format(f_name=f.__name__, author=author, date=date), exc_info=True)
             return f(*args, **kwargs)
         return _wrapped
     return _decorator
