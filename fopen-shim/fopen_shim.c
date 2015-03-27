@@ -30,15 +30,15 @@ int tag_file_opened(const char *path)
 FILE* fopen(const char *path, const char *mode)
 {
 	tag_file_opened(path);
-    _fopen = (FILE* (*)(const char *path, const char *mode)) dlsym(RTLD_NEXT, "fopen");
-    return _fopen(path, mode);
+	_fopen = (FILE* (*)(const char *path, const char *mode)) dlsym(RTLD_NEXT, "fopen");
+	return _fopen(path, mode);
 }
 
 FILE* fopen64(const char *path, const char *mode)
 {
 	tag_file_opened(path);
-    _fopen64 = (FILE* (*)(const char *path, const char *mode)) dlsym(RTLD_NEXT, "fopen64");
-    return _fopen64(path, mode);
+	_fopen64 = (FILE* (*)(const char *path, const char *mode)) dlsym(RTLD_NEXT, "fopen64");
+	return _fopen64(path, mode);
 }
 
 int open(const char *pathname, int flags)
